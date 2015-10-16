@@ -88,8 +88,9 @@ def main():
         print("processing {:,} pairs..".format(n_pairs))
         ests, seg_lists = [], []
         for est, seg_list in gen_estimates(args, h0, ha, pair_dict):
-            ests.append(est)
-            seg_lists.append(seg_list)
+            if est.reject:
+                ests.append(est)
+                seg_lists.append(seg_list)
         print("pushing results to database..")
         with DbManager(args.D) as db:
             db.insert(ests, seg_lists)
